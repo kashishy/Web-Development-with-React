@@ -1,14 +1,18 @@
 //adding component to our react application
 import React, { Component } from 'react';
-import { Media } from 'reactstrap';
+//import { Media } from 'reactstrap';
+import{ Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reactstrap';
 
 class Menu extends Component {
     //constructor with parameter props
+    //state can be passed to children through props
     constructor(props) {
         super(props);
         //states store properties related to this component
         this.state = {
-            //creating a js object
+
+            selectedDish: null
+            /*/creating a js object
             dishes: [
                 {
                     id: 0,
@@ -42,21 +46,60 @@ class Menu extends Component {
                     label:'',
                     price:'2.99',
                     description:'A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms'                        }
-                ],
-        };
+            ],*/
+        }
+    }
+
+    //setting state of component to selected dish
+    onDishSelect(dish) {
+        this.setState({ selectedDish: dish});
+    }
+
+    //rendering dish on selecction
+    renderDish(dish) {
+        if (dish != null)
+            return(
+                <Card>
+                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            );
+        else
+            return(
+                <div></div>
+            );
     }
 
     //every component should have render method to define view
     render() {
         //describing js variable
         //dishes refered from state of component, iterateover every dish and return layout for each dish
-        const menu = this.state.dishes.map((dish) => {
+        //const menu = this.state.dishes.map((dish) => {
+        //as dishes are moved to seperate file so access thorugh props
+        const menu = this.props.dishes.map((dish) => {
             return (
-                //key used to identify each element on screen by react
-                <div key={dish.id} className="col-12 mt-5">
+
+                <div key={dish.id} className="col-12 col-md-5 m-1">
                 {/*li class says each will act as list item*/}
+                <Card onClick={() => this.onDishSelect(dish)}>
+                    <CardImg width="100%" src={dish.image} alt={dish.name} />
+                    <CardImgOverlay>
+                        <CardTitle>{dish.name}</CardTitle>
+                    </CardImgOverlay>
+                </Card>
+                </div>
+
+
+                //without using cards
+                /*/key used to identify each element on screen by react
+                <div key={dish.id} className="col-12 mt-5">
+                {/*without using cards ,
+                li class says each will act as list item*}
                 <Media tag="li">
-                    {/*for displaying image on screen*/}
+                    {/*for displaying image on screen*}
                     <Media left middle>
                     <Media object src={dish.image} alt={dish.name} />
                     </Media>
@@ -64,8 +107,8 @@ class Menu extends Component {
                         <Media heading>{dish.name}</Media>
                         <p>{dish.description}</p>
                     </Media>
-                    </Media>
-                </div>
+                </Media>
+                </div>*/
             );
         });
 
@@ -73,9 +116,13 @@ class Menu extends Component {
             <div className="container">
                 <div className="row">
                 {/*displaying list of items on screen, here menu is js variable*/}
-                <Media list>
-                    {menu}
-                </Media>
+                {menu}
+                </div>
+
+                <div className="row">
+                    <div  className="col-12 col-md-5 m-1">
+                        {this.renderDish(this.state.selectedDish)}
+                    </div>
                 </div>
             </div>
         );
