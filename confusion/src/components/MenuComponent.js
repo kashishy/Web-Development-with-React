@@ -3,16 +3,19 @@ import React, { Component } from 'react';
 //import { Media } from 'reactstrap';
 import{ Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reactstrap';
 
+
 class Menu extends Component {
     //constructor with parameter props
     //state can be passed to children through props
     constructor(props) {
         super(props);
+
+        //moved to maincomponent
         //states store properties related to this component
-        this.state = {
+        /*this.state = {
 
             selectedDish: null
-            /*/creating a js object
+            //creating a js object
             dishes: [
                 {
                     id: 0,
@@ -46,16 +49,18 @@ class Menu extends Component {
                     label:'',
                     price:'2.99',
                     description:'A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms'                        }
-            ],*/
-        }
+            ],*
+        }*/
     }
 
+
+    //moved to main component
     //setting state of component to selected dish
-    onDishSelect(dish) {
+    /*onDishSelect(dish) {
         this.setState({ selectedDish: dish});
-    }
+    }*/
 
-    //rendering dish on selecction
+    /*//rendering dish on selecction
     renderDish(dish) {
         if (dish != null)
             return(
@@ -71,25 +76,33 @@ class Menu extends Component {
             return(
                 <div></div>
             );
-    }
+    }*/
 
     //every component should have render method to define view
     render() {
         //describing js variable
-        //dishes refered from state of component, iterateover every dish and return layout for each dish
+        //dishes refered from state of component, iterate over every dish and return layout for each dish
         //const menu = this.state.dishes.map((dish) => {
         //as dishes are moved to seperate file so access thorugh props
         const menu = this.props.dishes.map((dish) => {
             return (
 
                 <div key={dish.id} className="col-12 col-md-5 m-1">
-                {/*li class says each will act as list item*/}
+                    {/*after MainComponent, as onclick recieves data from props now*/}
+                    <Card onClick={() => this.props.onClick(dish.id)}>
+                        <CardImg width="100%" src={dish.image} alt={dish.name} />
+                        <CardImgOverlay>
+                            <CardTitle>{dish.name}</CardTitle>
+                        </CardImgOverlay>
+                    </Card>
+                
+                {/*before MainComponent. li class says each will act as list item}
                 <Card onClick={() => this.onDishSelect(dish)}>
                     <CardImg width="100%" src={dish.image} alt={dish.name} />
                     <CardImgOverlay>
                         <CardTitle>{dish.name}</CardTitle>
                     </CardImgOverlay>
-                </Card>
+                </Card>*/}
                 </div>
 
 
@@ -119,11 +132,14 @@ class Menu extends Component {
                 {menu}
                 </div>
 
-                <div className="row">
+                {/*moved to MainComponent}
+                <Dishdetail dish={this.state.selectedDish}></Dishdetail>*/}
+                
+                {/*<div className="row">
                     <div  className="col-12 col-md-5 m-1">
                         {this.renderDish(this.state.selectedDish)}
                     </div>
-                </div>
+                </div>*/}
             </div>
         );
     }
